@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -26,6 +28,9 @@ public class SecondFragment extends Fragment {
     ArrayList<Integer> langList = new ArrayList<>();
     String[] langArray = {"Все для дома", "Транспорт", "Рестораны и кафе", "Здоровье и красота", "Супермаркеты", "Одежда, обувь и аксессуары","Развлечения и хобби", "Онлайн-покупки"};
 
+    DatabaseHelper sqlHelper;
+    SQLiteDatabase db;
+
     private FragmentSecondBinding binding;
 
     @Override
@@ -37,6 +42,8 @@ public class SecondFragment extends Fragment {
 
         // initialize selected language array
         selectedLanguage = new boolean[langArray.length];
+        sqlHelper= new DatabaseHelper(this.getContext());
+        db= sqlHelper.getWritableDatabase();
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +101,7 @@ public class SecondFragment extends Fragment {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // dismiss dialog
+                        // dismiss dialog db = sqlHelper.getWritableDatabase();
                         dialogInterface.dismiss();
                     }
                 });
@@ -135,6 +142,12 @@ public class SecondFragment extends Fragment {
                 }
 
                 String sumValue = sum.getText().toString();
+                String placeValue = place.getText().toString();
+
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseHelper.COLUMN_PLACE, placeValue);
+                cv.put(DatabaseHelper.COLUMN_PRICE, Double.parseDouble(sumValue));
+                db.insert(DatabaseHelper.TABLE, null, cv);
 
             }
         });
