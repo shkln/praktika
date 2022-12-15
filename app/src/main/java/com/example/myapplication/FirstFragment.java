@@ -53,14 +53,16 @@ public class FirstFragment extends Fragment {
         // открываем подключение
         db = databaseHelper.getReadableDatabase();
 
+
+
         //получаем данные из бд в виде курсора
         userCursor =  db.rawQuery("select * from "+ DatabaseHelper.TABLE, null);
         // определяем, какие столбцы из курсора будут выводиться в ListView
         String[] headers = new String[] {DatabaseHelper.COLUMN_PRICE, DatabaseHelper.COLUMN_PLACE};
         // создаем адаптер, передаем в него курсор
-        userAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.two_line_list_item,
-                userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
-        userList.setAdapter(userAdapter);
+//        userAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.list_content,
+//                userCursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
+//        userList.setAdapter(userAdapter);
     }
     @Override
     public void onDestroyView() {
